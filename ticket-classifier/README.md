@@ -70,7 +70,7 @@ python manage.py runserver
 
 ---
 
-## πŸ"š API Endpoints
+## 📋 API Endpoints
 
 ### Submit Ticket
 ```http
@@ -125,37 +125,37 @@ GET /api/categories/
 
 ---
 
-## πŸ"‚ Project Structure
+## 📂 Project Structure
 
 ```
 ticket-classifier/
-β"œβ"€β"€ core/                      # Core ML modules
-β"‚   β"œβ"€β"€ classifier.py          # Ticket classifier
-β"‚   β"œβ"€β"€ embedding_service.py   # Embedding generation
-β"‚   β"œβ"€β"€ endee_client.py        # Endee API client
-β"‚   └── routing_engine.py     # Routing logic
-β"œβ"€β"€ tickets/                  # Django app
-β"‚   β"œβ"€β"€ models.py              # Ticket & Category models
-β"‚   β"œβ"€β"€ views.py               # API views
-β"‚   β"œβ"€β"€ serializers.py         # DRF serializers
-β"‚   β"œβ"€β"€ admin.py               # Admin interface
-β"‚   └── urls.py               # URL routing
-β"œβ"€β"€ templates/tickets/       # HTML templates
-β"œβ"€β"€ data/                     # Dataset storage
-β"‚   β"œβ"€β"€ raw/                   # Original dataset
-β"‚   └── processed/            # Train/test splits
-β"œβ"€β"€ scripts/                  # Utility scripts
-β"‚   β"œβ"€β"€ preprocess_data.py     # Data preprocessing
-β"‚   β"œβ"€β"€ load_to_endee.py       # Load vectors to Endee
-β"‚   └── explore_dataset.py    # Dataset exploration
-β"œβ"€β"€ config.py                 # Configuration
-β"œβ"€β"€ manage.py                 # Django management
+├── core/                      # Core ML modules
+│   ├── classifier.py          # Ticket classifier
+│   ├── embedding_service.py   # Embedding generation
+│   ├── endee_client.py        # Endee API client
+│   └── routing_engine.py     # Routing logic
+├── tickets/                  # Django app
+│   ├── models.py              # Ticket & Category models
+│   ├── views.py               # API views
+│   ├── serializers.py         # DRF serializers
+│   ├── admin.py               # Admin interface
+│   └── urls.py               # URL routing
+├── templates/tickets/       # HTML templates
+├── data/                     # Dataset storage
+│   ├── raw/                   # Original dataset
+│   └── processed/            # Train/test splits
+├── scripts/                  # Utility scripts
+│   ├── preprocess_data.py     # Data preprocessing
+│   ├── load_to_endee.py       # Load vectors to Endee
+│   └── explore_dataset.py    # Dataset exploration
+├── config.py                 # Configuration
+├── manage.py                 # Django management
 └── requirements.txt          # Python dependencies
 ```
 
 ---
 
-## πŸ"§ Configuration
+## ⚙️ Configuration
 
 Edit `.env` file:
 
@@ -169,7 +169,7 @@ DEBUG=True
 
 ---
 
-## πŸ'₯ Creating Admin User
+## 👤 Creating Admin User
 
 ```powershell
 python manage.py createsuperuser
@@ -177,7 +177,7 @@ python manage.py createsuperuser
 
 ---
 
-## πŸ"Š How Classification Works
+## ℹ️ How Classification Works
 
 1. **Ticket Submission**: User submits ticket through web form or API
 2. **Embedding Generation**: Ticket text (subject + description) is converted to 384-dimensional vector using sentence-transformers
@@ -201,7 +201,7 @@ python manage.py createsuperuser
 
 ---
 
-## πŸ" Dataset
+## 📊 Dataset
 
 Dataset: `data/raw/customer_support_tickets.csv`
 - Preprocessed and split into train (80%) / test (20%)
@@ -210,7 +210,7 @@ Dataset: `data/raw/customer_support_tickets.csv`
 
 ---
 
-## πŸ› οΈ Development Commands
+## 🛠️ Development Commands
 
 ```powershell
 # Run development server
@@ -242,7 +242,7 @@ python manage.py createsuperuser
 
 ---
 
-## πŸ"ˆ Future Enhancements
+## 🚀 Future Enhancements
 
 - [ ] Complete Endee vector database population
 - [ ] Add real-time classification accuracy monitoring
@@ -254,18 +254,18 @@ python manage.py createsuperuser
 
 ---
 
-## πŸ"„ License
+## ⚖️ License
 
 Apache License 2.0
 
 ---
 
-## πŸ'€ Author
+## ✍️ Author
 
 Built as a demonstration of AI-powered ticket classification using vector similarity search.
 
 ---
 
-## πŸ"ž Support
+## 📞 Support
 
 For questions or issues, submit a ticket through the system! 😊
