@@ -173,7 +173,4 @@ This project is licensed under the **Apache License 2.0**.
 
 ```
 
-Would you like me to generate a `requirements.txt` file or a `docker-compose.yml` to help others set up your project even faster?
-
-```
 
