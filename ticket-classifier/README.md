@@ -6,7 +6,7 @@ Automatically categorize and route support tickets using semantic similarity sea
 
 ---
 
-## πŸš€ Features
+## Features
 
 - **Automatic Classification**: Uses sentence-transformers to generate embeddings and classify tickets by semantic similarity
 - **Smart Routing**: Routes tickets to appropriate departments based on category
@@ -17,7 +17,7 @@ Automatically categorize and route support tickets using semantic similarity sea
 
 ---
 
-## πŸ› οΈ Tech Stack
+## Tech Stack
 
 - **Backend**: Python, Django, Django REST Framework
 - **Vector Database**: Endee (running in Docker)
@@ -27,7 +27,7 @@ Automatically categorize and route support tickets using semantic similarity sea
 
 ---
 
-## πŸ"‹ Prerequisites
+## Prerequisites
 
 - Python 3.8+
 - Docker (for Endee vector database)
@@ -35,7 +35,7 @@ Automatically categorize and route support tickets using semantic similarity sea
 
 ---
 
-## ⚑ Quick Start
+## Quick Start
 
 ### 1. Ensure Endee is Running
 
