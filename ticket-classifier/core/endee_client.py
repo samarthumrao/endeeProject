@@ -55,25 +55,35 @@ class EndeeClient:
     
     def create_index(self, index_name: str, dimension: int, metric: str = "cosine") -> Dict[str, Any]:
         """
-        Create a new vector index.
+        Create a new vector index using correct Endee API format.
         
         Args:
             index_name: Name of the index
             dimension: Dimension of vectors
-            metric: Distance metric (cosine, euclidean, dot_product)
+            metric: Distance metric (cosine, euclidean, dot)
             
         Returns:
             Response data
         """
-        endpoint = f"/api/v1/index/{index_name}"
+        # Convert metric to space_type (Endee's terminology)
+        space_type_map = {
+            "cosine": "cosine",
+            "euclidean": "l2",  
+            "dot": "ip",
+            "dot_product": "ip"
+        }
+        space_type = space_type_map.get(metric, "cosine")
+        
         payload = {
-            "dimension": dimension,
-            "metric": metric
+            "index_name": index_name,
+            "dim": dimension,
+            "space_type": space_type
         }
         
+        endpoint = "/api/v1/index/create"
         response = self._make_request('POST', endpoint, json=payload)
         print(f"Created index '{index_name}' with dimension {dimension}")
-        return response.json() if response.text else {}
+        return {"status": "success", "message": response.text}
     
     def delete_index(self, index_name: str) -> Dict[str, Any]:
         """
@@ -110,8 +120,8 @@ class EndeeClient:
                 }
             ]
         """
-        endpoint = f"/api/v1/index/{index_name}/insert"
-        payload = {"vectors": vectors}
+        endpoint = f"/api/v1/index/{index_name}/vector/insert"
+        payload = vectors  # Send array directly, not wrapped
         
         response = self._make_request('POST', endpoint, json=payload)
         print(f"Inserted {len(vectors)} vectors into '{index_name}'")
@@ -129,15 +139,25 @@ class EndeeClient:
         Returns:
             List of search results with id, score, and metadata
         """
+        import msgpack
+        
         endpoint = f"/api/v1/index/{index_name}/search"
         payload = {
             "vector": query_vector,
-            "top_k": top_k
+            "k": top_k
         }
         
         response = self._make_request('POST', endpoint, json=payload)
-        results = response.json() if response.text else {"results": []}
-        return results.get('results', [])
+        
+        # Endee returns MessagePack format
+        content_type = response.headers.get('Content-Type', '')
+        if 'msgpack' in content_type:
+            results = msgpack.unpackb(response.content)
+            return results if isinstance(results, list) else []
+        else:
+            # Fallback to JSON
+            results = response.json() if response.text else {"results": []}
+            return results.get('results', [])
     
     def list_indexes(self) -> List[str]:
         """
@@ -161,6 +181,18 @@ class EndeeClient:
         Returns:
             Index statistics
         """
+        import msgpack
         endpoint = f"/api/v1/index/{index_name}/stats"
         response = self._make_request('GET', endpoint)
-        return response.json() if response.text else {}
+        
+        # Endee returns MessagePack format
+        content_type = response.headers.get('Content-Type', '')
+        if 'msgpack' in content_type:
+            try:
+                stats = msgpack.unpackb(response.content)
+                return stats if isinstance(stats, dict) else {}
+            except Exception as e:
+                print(f"Error unpacking stats: {e}")
+                return {}
+        else:
+            return response.json() if response.text else {}

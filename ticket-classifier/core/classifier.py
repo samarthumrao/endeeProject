@@ -5,6 +5,7 @@ Uses Endee vector database for semantic similarity search.
 
 from typing import List, Dict, Tuple
 import pandas as pd
+import os
 from collections import Counter
 
 from core.endee_client import EndeeClient
@@ -27,7 +28,44 @@ class TicketClassifier:
         self.embedding_service = get_embedding_service()
         self.top_k = config.TOP_K_SIMILAR
         self.confidence_threshold = config.CONFIDENCE_THRESHOLD
-    
+        self._load_ticket_cache()
+        
+    def _load_ticket_cache(self):
+        """Load training data into memory for metadata lookup (workaround for Endee metadata issue)."""
+        try:
+            
+            base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            csv_path = os.path.join(base_dir, 'data', 'processed', 'train.csv')
+            
+            self.ticket_cache = {}
+            if os.path.exists(csv_path):
+                df = pd.read_csv(csv_path)
+                for idx, row in df.iterrows():
+                    # Extract category (check multiple possible column names)
+                    category = 'Unknown'
+                    for col in ['Ticket Type', 'Category', 'Type', 'Issue Type', 'Topic']:
+                        if col in row and pd.notna(row[col]):
+                            category = str(row[col])
+                            break
+                    
+                    # Combine text for display
+                    text_parts = []
+                    for col in ['Ticket Subject', 'Subject', 'Ticket Description', 'Description']:
+                        if col in row and pd.notna(row[col]):
+                            text_parts.append(str(row[col]))
+                    combined_text = " | ".join(text_parts)
+                    
+                    self.ticket_cache[f"ticket_{idx}"] = {
+                        "category": category,
+                        "text": combined_text
+                    }
+                print(f"Loaded {len(self.ticket_cache)} tickets into metadata cache")
+            else:
+                print(f"Warning: Training data not found at {csv_path}")
+        except Exception as e:
+            self.ticket_cache = {}
+            print(f"Error loading ticket cache: {e}")
+
     def classify_ticket(self, ticket_text: str) -> Dict:
         """
         Classify a support ticket.
@@ -66,20 +104,30 @@ class TicketClassifier:
             }
         
         # Extract categories from similar tickets
+        # Endee MessagePack format: [distance, id, metadata_field1, metadata_field2, ...]
+        # Metadata is not returned by Endee, so we look it up in our cache
         categories = []
         similarities = []
         similar_tickets_info = []
         
         for result in results:
-            metadata = result.get('metadata', {})
-            score = result.get('score', 0.0)
+            # Endee MessagePack format: [distance, id, metadata_field1, metadata_field2, ...]
+            # Based on our load script: [distance, id, combined_text, category, priority, sparse]
+            if len(result) < 2:
+                continue
+                
+            distance = result[0]  # Lower distance = more similar
+            ticket_id = result[1]
             
-            # Try to find category field (could be different names)
-            category = None
-            for field in ['Ticket Type', 'Type', 'Category', 'Issue Type']:
-                if field in metadata:
-                    category = metadata[field]
-                    break
+            # Lookup metadata from cache
+            cached_data = self.ticket_cache.get(ticket_id, {})
+            category = cached_data.get('category')
+            combined_text = cached_data.get('text', "")
+            
+            # Convert distance to similarity score (inverse)
+            # Cosine distance: 0 = identical, 2 = opposite
+            # Convert to similarity: 1 = identical, 0 = opposite
+            score = 1.0 - (distance / 2.0) if distance <= 2.0 else 0.0
             
             if category:
                 categories.append(category)
@@ -87,7 +135,8 @@ class TicketClassifier:
                 similar_tickets_info.append({
                     'category': category,
                     'score': score,
-                    'text': metadata.get('combined_text', '')[:200]  # First 200 chars
+                    'distance': distance,
+                    'text': combined_text[:200]
                 })
         
         # Determine final category by weighted voting
