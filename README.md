@@ -169,8 +169,4 @@ This project is licensed under the **Apache License 2.0**.
 
 **Author**:Samarth Umrao
 
-*Built to demonstrate the power of Vector Databases in modern Customer Service workflows.*
-
-```
-
 
