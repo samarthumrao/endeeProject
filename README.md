@@ -1,5 +1,5 @@
-```markdown
-# 🎫 Customer Support Ticket Classifier
+
+## 🎫 Customer Support Ticket Classifier
 
 An AI-powered classification and routing system that utilizes **Semantic Similarity Search** to automatically categorize support tickets and direct them to the appropriate departments.
 
@@ -176,3 +176,4 @@ This project is licensed under the **Apache License 2.0**.
 Would you like me to generate a `requirements.txt` file or a `docker-compose.yml` to help others set up your project even faster?
 
 ```
+
