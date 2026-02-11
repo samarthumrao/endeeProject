@@ -70,7 +70,7 @@ python manage.py runserver
 
 ---
 
-## 📋 API Endpoints
+## API Endpoints
 
 ### Submit Ticket
 ```http
@@ -125,37 +125,37 @@ GET /api/categories/
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 ticket-classifier/
-├── core/                      # Core ML modules
-│   ├── classifier.py          # Ticket classifier
-│   ├── embedding_service.py   # Embedding generation
-│   ├── endee_client.py        # Endee API client
-│   └── routing_engine.py     # Routing logic
-├── tickets/                  # Django app
-│   ├── models.py              # Ticket & Category models
-│   ├── views.py               # API views
-│   ├── serializers.py         # DRF serializers
-│   ├── admin.py               # Admin interface
-│   └── urls.py               # URL routing
-├── templates/tickets/       # HTML templates
-├── data/                     # Dataset storage
-│   ├── raw/                   # Original dataset
-│   └── processed/            # Train/test splits
-├── scripts/                  # Utility scripts
-│   ├── preprocess_data.py     # Data preprocessing
-│   ├── load_to_endee.py       # Load vectors to Endee
-│   └── explore_dataset.py    # Dataset exploration
-├── config.py                 # Configuration
-├── manage.py                 # Django management
-└── requirements.txt          # Python dependencies
+|-- core/                      # Core ML modules
+|   |-- classifier.py          # Ticket classifier
+|   |-- embedding_service.py   # Embedding generation
+|   |-- endee_client.py        # Endee API client
+|   `-- routing_engine.py     # Routing logic
+|-- tickets/                  # Django app
+|   |-- models.py              # Ticket & Category models
+|   |-- views.py               # API views
+|   |-- serializers.py         # DRF serializers
+|   |-- admin.py               # Admin interface
+|   `-- urls.py               # URL routing
+|-- templates/tickets/       # HTML templates
+|-- data/                     # Dataset storage
+|   |-- raw/                   # Original dataset
+|   `-- processed/            # Train/test splits
+|-- scripts/                  # Utility scripts
+|   |-- preprocess_data.py     # Data preprocessing
+|   |-- load_to_endee.py       # Load vectors to Endee
+|   `-- explore_dataset.py    # Dataset exploration
+|-- config.py                 # Configuration
+|-- manage.py                 # Django management
+`-- requirements.txt          # Python dependencies
 ```
 
 ---
 
-## ⚙️ Configuration
+## Configuration
 
 Edit `.env` file:
 
@@ -169,7 +169,7 @@ DEBUG=True
 
 ---
 
-## 👤 Creating Admin User
+## Creating Admin User
 
 ```powershell
 python manage.py createsuperuser
@@ -177,7 +177,7 @@ python manage.py createsuperuser
 
 ---
 
-## ℹ️ How Classification Works
+## How Classification Works
 
 1. **Ticket Submission**: User submits ticket through web form or API
 2. **Embedding Generation**: Ticket text (subject + description) is converted to 384-dimensional vector using sentence-transformers
@@ -188,7 +188,7 @@ python manage.py createsuperuser
 
 ---
 
-## 🎯 Routing Rules
+## Routing Rules
 
 | Category | Department | Priority | SLA (hours) |
 |----------|------------|----------|-------------|
@@ -201,7 +201,7 @@ python manage.py createsuperuser
 
 ---
 
-## 📊 Dataset
+## Dataset
 
 Dataset: `data/raw/customer_support_tickets.csv`
 - Preprocessed and split into train (80%) / test (20%)
@@ -210,7 +210,7 @@ Dataset: `data/raw/customer_support_tickets.csv`
 
 ---
 
-## 🛠️ Development Commands
+## Development Commands
 
 ```powershell
 # Run development server
@@ -234,7 +234,7 @@ python manage.py createsuperuser
 
 ---
 
-## 🚧 Current Limitations
+## Current Limitations
 
 - **Vector Loading**: Index creation API endpoint needs configuration (Endee API documentation required)
 - **Mock Classification**: System currently works with fallback routing if vector database isn't populated
@@ -242,7 +242,7 @@ python manage.py createsuperuser
 
 ---
 
-## 🚀 Future Enhancements
+## Future Enhancements
 
 - [ ] Complete Endee vector database population
 - [ ] Add real-time classification accuracy monitoring
@@ -254,18 +254,18 @@ python manage.py createsuperuser
 
 ---
 
-## ⚖️ License
+## License
 
 Apache License 2.0
 
 ---
 
-## ✍️ Author
+## Author
 
 Built as a demonstration of AI-powered ticket classification using vector similarity search.
 
 ---
 
-## 📞 Support
+## Support
 
-For questions or issues, submit a ticket through the system! 😊
+For questions or issues, submit a ticket through the system! 
